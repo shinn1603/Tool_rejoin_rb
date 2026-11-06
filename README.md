@@ -10,16 +10,16 @@ Mở Termux trên điện thoại và dán lệnh sau:
 . <(curl -sL https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/Setubtoolrejoin)
 ```
 
-## ▶️ Cách khởi chạy Tool
+## ▶️ Cách khởi chạy Tool cực nhanh
 
-Sau khi cài đặt xong, bạn có thể chạy:
+Sau khi chạy xong script cài đặt, hệ thống đã tự tạo phím tắt sẵn, bạn chỉ cần gõ:
 
-- **Bản chuẩn (New Tool):**
+- **Bản thường:**
   ```bash
-  python /sdcard/Download/zamtoolrejoinnewtool.py
+  rejoin
   ```
-
 - **Bản VIP:**
   ```bash
-  python /sdcard/Download/viprejoin.py
+  rejoin-vip
   ```
+*(Hoặc chạy lệnh thủ công `python /sdcard/Download/zamtoolrejoinnewtool.py`)*

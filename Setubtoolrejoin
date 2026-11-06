@@ -38,11 +38,26 @@ pip install requests rich prettytable pytz pycryptodome psutil colorama
 curl -Ls "https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/zamtoolrejoinnewtool.py" -o /sdcard/Download/zamtoolrejoinnewtool.py
 curl -Ls "https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/viprejoin.py" -o /sdcard/Download/viprejoin.py
 
+# 7. Tạo phím tắt lệnh nhanh (rejoin và rejoin-vip)
+PREFIX="/data/data/com.termux/files/usr"
+cat << 'EOF' > "$PREFIX/bin/rejoin"
+#!/data/data/com.termux/files/usr/bin/bash
+python /sdcard/Download/zamtoolrejoinnewtool.py "$@"
+EOF
+chmod +x "$PREFIX/bin/rejoin"
+
+cat << 'EOF' > "$PREFIX/bin/rejoin-vip"
+#!/data/data/com.termux/files/usr/bin/bash
+python /sdcard/Download/viprejoin.py "$@"
+EOF
+chmod +x "$PREFIX/bin/rejoin-vip"
+
 echo ""
 echo "=========================================================="
 echo "   CÀI ĐẶT THÀNH CÔNG VỚI PYTHON 3.13!"
 echo "   Kiểm tra: python --version"
 echo ""
-echo "   Chạy tool thường: python /sdcard/Download/zamtoolrejoinnewtool.py"
-echo "   Chạy tool VIP:    python /sdcard/Download/viprejoin.py"
+echo "   Phím tắt tiện lợi (chạy từ bất kỳ đâu):"
+echo "   👉 Gõ: rejoin       (để mở bản thường)"
+echo "   👉 Gõ: rejoin-vip   (để mở bản VIP)"
 echo "=========================================================="
