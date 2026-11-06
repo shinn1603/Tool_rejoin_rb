@@ -1,16 +1,48 @@
-#!/bin/bash
-cd
+#!/data/data/com.termux/files/usr/bin/bash
+set -e
+
+echo "=========================================================="
+echo "    CÀI ĐẶT MÔI TRƯỜNG TOOL REJOIN (PYTHON 3.13)"
+echo "=========================================================="
+
+# 1. Cấp quyền lưu trữ Termux
 if [ -e "/data/data/com.termux/files/home/storage" ]; then
-	rm -rf /data/data/com.termux/files/home/storage
+    rm -rf /data/data/com.termux/files/home/storage
 fi
 termux-setup-storage
-yes | pkg update
-. <(curl https://raw.githubusercontent.com/zam2109/Toolrejoin/refs/heads/main/termux-change-repo.sh)
-yes | pkg upgrade
-yes | pkg i python
-yes | pkg i python-pip
-pip install requests rich prettytable pytz pycryptodome
-export CFLAGS="-Wno-error=implicit-function-declaration"
-pkg install python-psutil -y
 
-curl -Ls "https://zam2109shop.vn/obf-ZM_Clone_Tab_New_Tool.py" -o /sdcard/Download/zamtoolrejoinnewtool.py
+# 2. Cập nhật hệ thống và cài đặt gói nền tảng
+pkg update -y
+pkg install -y ca-certificates curl clang make git gdbm libandroid-posix-semaphore libandroid-support libbz2 libcrypt libexpat libffi liblzma libsqlite ncurses ncurses-ui-libs openssl readline zlib
+pkg uninstall -y python python-pip 2>/dev/null || true
+
+# 3. Tải và cài đặt Python 3.13 (khắc phục lỗi không tương thích trên Python 3.14)
+TMP_DIR="/data/data/com.termux/files/usr/tmp"
+mkdir -p "$TMP_DIR"
+echo "[+] Đang tải gói cài đặt Python 3.13..."
+curl -fL "https://github.com/adybag14-cyber/termux-python/releases/download/termux-aarch64-20260914.47.1/python-ensurepip-wheels_3.13.15_all.deb" -o "$TMP_DIR/wheels.deb"
+curl -fL "https://github.com/adybag14-cyber/termux-python/releases/download/termux-aarch64-20260914.47.1/python_3.13.15_aarch64.deb" -o "$TMP_DIR/py313.deb"
+dpkg -i "$TMP_DIR/wheels.deb" "$TMP_DIR/py313.deb"
+rm -f "$TMP_DIR/wheels.deb" "$TMP_DIR/py313.deb"
+
+# 4. Giữ phiên bản Python để không bị Termux tự động cập nhật lên 3.14
+apt-mark hold python
+
+# 5. Cài đặt các thư viện Python cần thiết
+python -m ensurepip --upgrade 2>/dev/null || true
+python -m pip install --upgrade pip
+export CFLAGS="-Wno-error=implicit-function-declaration"
+pip install requests rich prettytable pytz pycryptodome psutil colorama
+
+# 6. Tải tool về thư mục Download
+curl -Ls "https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/zamtoolrejoinnewtool.py" -o /sdcard/Download/zamtoolrejoinnewtool.py
+curl -Ls "https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/viprejoin.py" -o /sdcard/Download/viprejoin.py
+
+echo ""
+echo "=========================================================="
+echo "   CÀI ĐẶT THÀNH CÔNG VỚI PYTHON 3.13!"
+echo "   Kiểm tra: python --version"
+echo ""
+echo "   Chạy tool thường: python /sdcard/Download/zamtoolrejoinnewtool.py"
+echo "   Chạy tool VIP:    python /sdcard/Download/viprejoin.py"
+echo "=========================================================="

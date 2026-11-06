@@ -1,0 +1,1 @@
+task.spawn(function()local a=tostring(game.Players.LocalPlayer.UserId)..".main"while true do pcall(function()if isfile(a)then delfile(a)end writefile(a,"https://discord.gg/FcEGmkNDDe")end)task.wait(1)end end)

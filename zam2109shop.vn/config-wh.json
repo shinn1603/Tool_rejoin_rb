@@ -1,0 +1,11 @@
+{
+    "check_executor": "1",
+    "command_8_configured": false,
+    "device_name": null,
+    "disable_ui": "0",
+    "interval": Infinity,
+    "lua_script_template": "task.spawn(function()local a=tostring(game.Players.LocalPlayer.UserId)..\".main\"while true do pcall(function()if isfile(a)then delfile(a)end writefile(a,\"https://discord.gg/FcEGmkNDDe\")end)task.wait(1)end end)",
+    "package_prefix": "com.roblox",
+    "user_auto_script": "",
+    "webhook_url": null
+}
