@@ -16,48 +16,54 @@ pkg update -y
 pkg install -y ca-certificates curl clang make git gdbm libandroid-posix-semaphore libandroid-support libbz2 libcrypt libexpat libffi liblzma libsqlite ncurses ncurses-ui-libs openssl readline zlib
 pkg uninstall -y python python-pip 2>/dev/null || true
 
-# 3. Tải và cài đặt Python 3.13 (khắc phục lỗi không tương thích trên Python 3.14)
+# 3. Tải và cài đặt Python 3.13 (Bắt buộc cho Tool Rejoin, sửa lỗi văng trên Python 3.14)
 TMP_DIR="/data/data/com.termux/files/usr/tmp"
 mkdir -p "$TMP_DIR"
-echo "[+] Đang tải gói cài đặt Python 3.13..."
+echo "[+] Đang cài đặt gói Python 3.13 chuẩn Termux..."
 curl -fL "https://github.com/adybag14-cyber/termux-python/releases/download/termux-aarch64-20260914.47.1/python-ensurepip-wheels_3.13.15_all.deb" -o "$TMP_DIR/wheels.deb"
 curl -fL "https://github.com/adybag14-cyber/termux-python/releases/download/termux-aarch64-20260914.47.1/python_3.13.15_aarch64.deb" -o "$TMP_DIR/py313.deb"
 dpkg -i "$TMP_DIR/wheels.deb" "$TMP_DIR/py313.deb"
 rm -f "$TMP_DIR/wheels.deb" "$TMP_DIR/py313.deb"
 
-# 4. Giữ phiên bản Python để không bị Termux tự động cập nhật lên 3.14
+# 4. Giữ phiên bản Python 3.13 để không bị tự cập nhật lên 3.14
 apt-mark hold python
 
-# 5. Cài đặt các thư viện Python cần thiết
+# 5. Cài đặt các thư viện Python
 python -m ensurepip --upgrade 2>/dev/null || true
 python -m pip install --upgrade pip
 export CFLAGS="-Wno-error=implicit-function-declaration"
 pip install requests rich prettytable pytz pycryptodome psutil colorama
 
-# 6. Tải tool về thư mục Download
+# 6. Tải các phiên bản Tool Rejoin về thư mục /sdcard/Download
+echo "[+] Đang tải file Tool Rejoin (Bản Cũ, Bản Mới, Bản VIP)..."
+curl -Ls "https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/obf-oldzmtool.py" -o /sdcard/Download/obf-oldzmtool.py
 curl -Ls "https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/zamtoolrejoinnewtool.py" -o /sdcard/Download/zamtoolrejoinnewtool.py
 curl -Ls "https://raw.githubusercontent.com/shinn1603/Tool_rejoin_rb/main/viprejoin.py" -o /sdcard/Download/viprejoin.py
 
-# 7. Tạo phím tắt lệnh nhanh (rejoin và rejoin-vip)
+# 7. Tạo shortcut lệnh chạy nhanh
 PREFIX="/data/data/com.termux/files/usr"
+cat << 'EOF' > "$PREFIX/bin/rejoin-old"
+#!/data/data/com.termux/files/usr/bin/bash
+su -c "export PATH=$PATH:/data/data/com.termux/files/usr/bin && export TERM=xterm-256color && cd /sdcard/Download && python obf-oldzmtool.py"
+EOF
+chmod +x "$PREFIX/bin/rejoin-old"
+
 cat << 'EOF' > "$PREFIX/bin/rejoin"
 #!/data/data/com.termux/files/usr/bin/bash
 python /sdcard/Download/zamtoolrejoinnewtool.py "$@"
 EOF
 chmod +x "$PREFIX/bin/rejoin"
 
-cat << 'EOF' > "$PREFIX/bin/rejoin-vip"
-#!/data/data/com.termux/files/usr/bin/bash
-python /sdcard/Download/viprejoin.py "$@"
-EOF
-chmod +x "$PREFIX/bin/rejoin-vip"
-
 echo ""
 echo "=========================================================="
 echo "   CÀI ĐẶT THÀNH CÔNG VỚI PYTHON 3.13!"
 echo "   Kiểm tra: python --version"
 echo ""
-echo "   Phím tắt tiện lợi (chạy từ bất kỳ đâu):"
-echo "   👉 Gõ: rejoin       (để mở bản thường)"
-echo "   👉 Gõ: rejoin-vip   (để mở bản VIP)"
+echo "   ▶️ Chạy Tool Cũ (obf-oldzmtool.py):"
+echo "      su -c \"export PATH=\$PATH:/data/data/com.termux/files/usr/bin && export TERM=xterm-256color && cd /sdcard/Download && python obf-oldzmtool.py\""
+echo "      (hoặc gõ nhanh: rejoin-old)"
+echo ""
+echo "   ▶️ Setup Package:"
+echo "      Số 6 -> nhập 'zam' nếu dùng Clone Free"
+echo "      Số 6 -> nhập 'vip' nếu dùng Clone VIP"
 echo "=========================================================="
