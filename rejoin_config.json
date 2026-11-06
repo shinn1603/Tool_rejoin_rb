@@ -1,0 +1,15 @@
+{
+    "place_id": "2753915549",
+    "job_id": "",
+    "private_server_link": "",
+    "package_prefix": "com.roblox",
+    "packages": [
+        "com.roblox.client"
+    ],
+    "check_interval": 15,
+    "max_idle_time": 60,
+    "use_executor_heartbeat": true,
+    "heartbeat_dir": "/sdcard/RobloxRejoin",
+    "webhook_url": "",
+    "device_name": "Android-Termux"
+}
